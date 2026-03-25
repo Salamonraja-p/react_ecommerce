@@ -11,8 +11,7 @@ const NewProduct = () => {
   let [newProduct, setNewProduct] = useState({
     title: "",
     price: 500,
-    description:
-      "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+    description: "Sample description",
     category: "",
     image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
     rating: {
@@ -22,77 +21,72 @@ const NewProduct = () => {
   });
 
   let handleChange = (e) => {
-        let {value, name} = e.target
+    let { value, name } = e.target;
 
-        let fieldName = name.split("rating.")[1]       
+    let fieldName = name.split("rating.")[1];
 
-        if( name.includes( "rating." ) ){
-            setNewProduct( {
-                ...newProduct,
-                rating : {
-                    ...newProduct.rating,
-                    [fieldName] : value
-                }
-            } )
-        }
-        else{
-            setNewProduct( {
-                ...newProduct,
-                [name] : value
-            } )                       
-        }
-  }
-
-  let handleAdd = (e) => {
-    e.preventDefault()
-
-    fetch( "http://localhost:5000/products", {
-      method : "POST",
-      headers : {
-        "Content-Type" : "application/json"
-      },
-      body : JSON.stringify( newProduct )
-    } )
-    .then( ()=>{
-      alert( "Data Added Successfully" )
-      setNewProduct( {
-        title: "",
-        price: 500,
-        description:
-          "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-        category: "",
-        image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+    if (name.includes("rating.")) {
+      setNewProduct({
+        ...newProduct,
         rating: {
-          rate: 0,
-          count: 0,
+          ...newProduct.rating,
+          [fieldName]: value,
         },
-      } )
-    } )
-  } 
+      });
+    } else {
+      setNewProduct({
+        ...newProduct,
+        [name]: value,
+      });
+    }
+  };
+
   
+  let handleAdd = (e) => {
+    e.preventDefault();
+
+    alert("This is frontend only. Product not saved globally.");
+
+    setNewProduct({
+      title: "",
+      price: 500,
+      description: "Sample description",
+      category: "",
+      image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+      rating: {
+        rate: 0,
+        count: 0,
+      },
+    });
+  };
+
   return (
     <Paper elevation={20} style={paperStyle}>
-      <Typography variant="h5" textAlign="center" style={{ margin: "10x 0" }}>
-        {" "}
-        Create New Product{" "}
+      <Typography variant="h5" textAlign="center">
+        Create New Product
       </Typography>
-      <Grid2 component="form" style={{ display: "grid", gap: "20px" }} onSubmit={handleAdd}>
+
+      <Grid2
+        component="form"
+        style={{ display: "grid", gap: "20px" }}
+        onSubmit={handleAdd}
+      >
         <TextField
           value={newProduct.title}
           name="title"
           label="Title"
-          variant="outlined"
           fullWidth
           onChange={handleChange}
         />
+
         <TextField
           value={newProduct.category}
           name="category"
           label="Category"
-          variant="outlined"
           fullWidth
           onChange={handleChange}
         />
+
         <Grid2 container spacing={2}>
           <Grid2 size={6}>
             <TextField
@@ -100,22 +94,22 @@ const NewProduct = () => {
               name="rating.rate"
               type="number"
               label="Rate"
-              variant="outlined"
               onChange={handleChange}
             />
           </Grid2>
+
           <Grid2 size={6}>
             <TextField
               value={newProduct.rating.count}
               name="rating.count"
               type="number"
               label="Count"
-              variant="outlined"
               onChange={handleChange}
             />
           </Grid2>
         </Grid2>
-        <Button type="submit" variant="contained" fullWidth >
+
+        <Button type="submit" variant="contained" fullWidth>
           Add
         </Button>
       </Grid2>

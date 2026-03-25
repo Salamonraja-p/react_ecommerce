@@ -1,27 +1,29 @@
 import { useEffect, useState } from "react";
-import axios from "axios"
+import axios from "axios";
 
-function useFetch(url) {
-  let [products, setProducts] = useState([]);
-  let [error, setError] = useState("");
-  let [isLoading, setIsLoading] = useState(true);
+const useFetch = (url) => {
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    let fetchApi = async () => {
-      try {
+    axios
+      .get(url)
+      .then((res) => {
+        console.log("FULL DATA:", res.data);
+
         
-        let response = await axios.get( url )
-        setProducts( response.data );
+        setProducts(res.data.products);
 
-      } catch (error) {
-        setError(error.message);
-      } finally {
         setIsLoading(false);
-      }
-    };
-    fetchApi();
-  }, []);
+      })
+      .catch((err) => {
+        setError("Error fetching data");
+        setIsLoading(false);
+      });
+  }, [url]);
 
-  return { products, error, isLoading, setProducts}
-}
+  return { products, error, isLoading };
+};
+
 export default useFetch;
